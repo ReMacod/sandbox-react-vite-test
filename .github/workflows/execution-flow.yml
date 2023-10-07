@@ -1,13 +1,13 @@
 name: Website Deployment for Pull Request
 on:
   push:
-    pull_request:
     branches:
       - main
-    push:
-      branches:
-        - feature
-    workflow_dispatch:
+      - feature
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -81,9 +81,10 @@ jobs:
         id: deploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: https://polite-moss-09da70103.3.azurestaticapps.net
-          repo_token: dea5eb4e59a3c9f5f4972f1af6dda24febc8456c63db8c8b6769ff50bd3ed7ff3-65a2bf4c-4a28-418f-a1cb-8cfdbd0c478e003285723
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.DEPLOY_TOKEN }}
           action: "upload"
+          app_location: "dist"
   report:
     needs: [lint, deploy]
     if: failure()
