@@ -86,6 +86,7 @@ jobs:
           action: "upload"
           app_location: "dist-files"
   manual_deploy:
+    needs: deploy
     if: github.event_name == 'workflow_run' && github.event.workflow == 'Website Deployment for Pull Request' && github.event.conclusion == 'success' && github.event.workflow_run.event == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
