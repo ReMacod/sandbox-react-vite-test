@@ -1,8 +1,6 @@
 name: Website Deployment Production
 on:
-  push:
-  pull_request:
-  workflow_dispatch:
+  workflow_dispatch: {}
 jobs:
   lint:
     runs-on: ubuntu-latest
