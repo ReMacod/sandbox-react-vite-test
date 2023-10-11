@@ -4,7 +4,7 @@ function App() {
   return (
     <>
       <h1 className='text-xl font-bold text-red-500'>
-        Hello Codelivery production testing
+        Hello Codelivery on AWS
       </h1>
     </>
   );
