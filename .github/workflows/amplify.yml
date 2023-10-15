@@ -1,4 +1,4 @@
-name: Build and Deploy Web App to Stage
+name: Build and Deploy Web App to Stage AWS
 on:
   push:
     branches: [main]
@@ -7,10 +7,10 @@ jobs:
     name: Build and Deploy
     runs-on: ubuntu-latest
     env:
-      BUCKET:
+      BUCKET: sandbox-react-vite-test
       DIST: build
-      REGION:
-      DIST_ID:
+      REGION: eu-north-1
+      DIST_ID: EHORUIQR7A8TU
 
     steps:
       - name: Checkout
@@ -22,3 +22,21 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.REGION}}
+
+      - name: Install Dependencies
+        run: |
+          node --version
+          npm ci --production
+
+      - name: Build Website
+        run: npm run build
+
+      - name: Copy files to the Stage AWS CLI
+        run: |
+          aws s3 sync --delete ${{ env.DIST}} s3://${{ env.BUCKET}}
+
+      - name: Copy files to the Stage AWS CLI
+        run: |
+          aws cloudfront create-invalidation \
+          --distribution-id ${{ env.DIST_ID}} \
+          --paths "/*"
