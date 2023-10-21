@@ -84,7 +84,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-north-1
       - name: Deploy to S3
-            run: aws s3 sync --delete ${{ env.DIST }} s3://sandbox-react-vite-test
+        run: |
+          aws s3 sync --delete ${{ env.DIST }} s3://sandbox-react-vite-test
 
   report:
     needs: [lint, deploy]
